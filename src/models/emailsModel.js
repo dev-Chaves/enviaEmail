@@ -15,7 +15,7 @@ async function dataViewer() {
             const ws = view.Sheets['Sheet1']; 
             
             if (!ws) {
-                console.error("A aba 'Sheets1' não foi encontrada no arquivo.");
+                console.error(`A aba '${ws}' não foi encontrada no arquivo.`);
                 return;
             }
             
