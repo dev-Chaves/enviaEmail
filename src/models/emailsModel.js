@@ -1,5 +1,8 @@
 const fs = require('fs');
 const xlsx = require('xlsx');
+const { dotenv } = require('../app');
+
+dotenv.config();
 
 const filePath = "C:/Users/ORC/Documents/enviaEmail/planilha.xlsx";
 
@@ -31,9 +34,6 @@ async function dataViewer() {
         console.error("Arquivo não encontrado:", filePath);
     };
 };
-
-
-
 
 module.exports = {
     dataViewer,
