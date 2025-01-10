@@ -1,35 +1,48 @@
 const nodemailer = require('nodemailer');
 const Mail = require('nodemailer/lib/mailer');
 
-const pass = process.env.EMAIL_PASS;
-
-const email = process.env.EMAIL_USER;
-
 const emailEnviar = nodemailer.createTransport({
-    host: 'smtp@gmail.com',
+    host: 'smtp.gmail.com',
     port: '587',
     secure: false, 
 
     auth: {
-        user: email, 
-        pass: pass,
+        user: 'testeenviaemailorc@gmail.com', 
+        pass: 'kuqi hhcs ltpx cyqi'
     },   
 
 });
 
 
-const enviarEmail = async () =>{
-    const info = await emailEnviar.sendMail({
-        from: 'Teste',
-        to:'joaobolasoapa@gmail.com',
-        subject: 'Hello',
-        text:'Hello World',
-        html: '<b>Teste</b>'
-    }).then( console.log(`Mensagem enviada para ${info.messageId}`)).catch(`${console.error()
-    }`)
+const enviarEmail = async (req, res) => {
 
-   
+    emailEnviar.verify((error, success) => {
+        if (error) {
+            console.error('Erro ao conectar ao servidor SMTP:', error);
+        } else {
+            console.log('Conexão ao servidor SMTP bem-sucedida!');
+        }
+    });
+    
 
+    try {
+        const info = await emailEnviar.sendMail({
+            from: 'Teste',
+            to: 'joaobolasoapa@gmail.com',
+            subject: 'Hello',
+            text: 'Hello World',
+            html: '<b>Teste</b>',
+        });
+
+        console.log(`Mensagem enviada para ${info.messageId}`);
+
+        res.status(200).json({ message: 'E-mail enviado com sucesso!', messageId: info.messageId });
+
+    } catch (error) {
+        console.error('Erro ao enviar e-mail:', error);
+
+        res.status(500).json({ message: 'Erro ao enviar o e-mail', error: error.message });
+    }
 };
 
 module.exports = {

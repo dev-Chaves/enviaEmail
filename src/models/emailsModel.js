@@ -1,8 +1,5 @@
 const fs = require('fs');
 const xlsx = require('xlsx');
-const { dotenv } = require('../app');
-
-dotenv.config();
 
 const filePath = "C:/Users/ORC/Documents/enviaEmail/planilha.xlsx";
 
@@ -24,6 +21,8 @@ async function dataViewer() {
             
             const data = xlsx.utils.sheet_to_json(ws); // Converte os dados para JSON
             console.log(data);
+
+            return data
 
 
 
