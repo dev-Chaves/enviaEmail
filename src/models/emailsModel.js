@@ -3,6 +3,8 @@ const xlsx = require('xlsx');
 
 const filePath = "C:/Users/ORC/Documents/enviaEmail/planilha.xlsx";
 
+let emails = [];
+
 async function dataViewer() {
 
     if (fs.existsSync(filePath)) {
@@ -20,6 +22,11 @@ async function dataViewer() {
             }
             
             const data = xlsx.utils.sheet_to_json(ws); // Converte os dados para JSON
+
+            emails = data.map(item => item.Email);
+
+            console.log(emails);
+
             console.log(data);
 
             return data
@@ -36,4 +43,5 @@ async function dataViewer() {
 
 module.exports = {
     dataViewer,
+    emails
 };
