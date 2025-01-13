@@ -22,6 +22,8 @@ async function dataViewer() {
             const data = xlsx.utils.sheet_to_json(ws); // Converte os dados para JSON
             console.log(data);
 
+            return data
+
 
 
         } catch (error) {
@@ -31,9 +33,6 @@ async function dataViewer() {
         console.error("Arquivo não encontrado:", filePath);
     };
 };
-
-
-
 
 module.exports = {
     dataViewer,
