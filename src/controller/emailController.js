@@ -1,14 +1,18 @@
 const nodemailer = require('nodemailer');
 const Mail = require('nodemailer/lib/mailer');
 
+const dontenv = require('dotenv');
+
+dontenv.config();
+
 const emailEnviar = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: '587',
     secure: false, 
 
     auth: {
-        user: 'testeenviaemailorc@gmail.com', 
-        pass: 'kuqi hhcs ltpx cyqi'
+        user: process.env.EMAIL_USER, 
+        pass: process.env.EMAIL_PSS
     },   
 
 });
