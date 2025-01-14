@@ -32,7 +32,7 @@ const enviarEmail = async (req, res) => {
     try {
         const info = await emailEnviar.sendMail({
             from: 'Teste',
-            to: 'joaobolasoapa@gmail.com',
+            to: process.env.EMAIL_TESTE,
             subject: 'Hello',
             text: 'Hello World',
             html: '<b>Teste</b>',
