@@ -1,9 +1,11 @@
 const nodemailer = require('nodemailer');
-const Mail = require('nodemailer/lib/mailer');
-
 const dontenv = require('dotenv');
+const pLimit = require('plimit')
+const { emails } = require('../models/emailsModel');
 
 dontenv.config();
+
+const limit = pLimit(10);
 
 const emailEnviar = nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -18,7 +20,7 @@ const emailEnviar = nodemailer.createTransport({
 });
 
 
-const enviarEmail = async (req, res) => {
+const enviarEmail = async (to, req, res) => {
 
     emailEnviar.verify((error, success) => {
         if (error) {
@@ -47,6 +49,16 @@ const enviarEmail = async (req, res) => {
 
         res.status(500).json({ message: 'Erro ao enviar o e-mail', error: error.message });
     }
+};
+
+const sendEmails = async () => {
+
+    const tasks = emails.map(email => 
+            limit(
+                ()=> enviarEmail(email,'Assunto do Email', 'Conteúdo do e-mail')
+        )
+    );
+    await Promise.all(tasks);
 };
 
 module.exports = {
