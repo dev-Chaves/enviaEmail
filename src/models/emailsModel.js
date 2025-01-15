@@ -40,5 +40,4 @@ async function dataViewer() {
 
 module.exports = {
     dataViewer,
-    emails
 };
