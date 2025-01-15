@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const dontenv = require('dotenv');
-const pLimit = require('p-limit');
+// const pLimit = require('p-limit');
 const { emails } = require('../models/emailsModel');
 
 dontenv.config();
@@ -27,7 +27,7 @@ const enviarEmail = async (to) => {
             console.error('Erro ao conectar ao servidor SMTP:', error);
         } else {
             console.log('Conexão ao servidor SMTP bem-sucedida!');
-        }
+        };
     });
     
 
