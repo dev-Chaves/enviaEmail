@@ -14,6 +14,8 @@ router.get('/data', dataController.view);
 
 router.post('/enviarEmail', enviarEMail.enviarEmail);
 
+router.post('/variosEmails', enviarEMail.sendEmails);
+
 module.exports = {
     router,
 };
