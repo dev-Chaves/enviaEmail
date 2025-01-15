@@ -3,8 +3,6 @@ const xlsx = require('xlsx');
 
 const filePath = "C:/Users/ORC/Documents/enviaEmail/planilha.xlsx";
 
-let emails = [];
-
 async function dataViewer() {
 
     if (fs.existsSync(filePath)) {
@@ -23,18 +21,17 @@ async function dataViewer() {
             
             const data = xlsx.utils.sheet_to_json(ws);
 
-            emails = data.map(item => item.Email);
+            const emails = data.map(item => item.Email);
 
-            console.log(emails);
+            console.log("Emails extraídos",emails);
 
             console.log(data);
 
-            return data
-
-
+            return emails;
 
         } catch (error) {
             console.error("Erro ao processar o arquivo Excel:", error.message);
+            return [];
         }
     } else {
         console.error("Arquivo não encontrado:", filePath);
