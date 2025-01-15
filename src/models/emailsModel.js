@@ -23,9 +23,9 @@ async function dataViewer() {
 
             const emails = data.map(item => item.Email);
 
-            console.log("Emails extraídos",emails);
+            // console.log("Emails extraídos",emails);
 
-            console.log(data);
+            // console.log(data);
 
             return emails;
 
