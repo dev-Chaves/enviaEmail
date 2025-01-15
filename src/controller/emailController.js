@@ -1,11 +1,8 @@
 const nodemailer = require('nodemailer');
 const dontenv = require('dotenv');
-// const pLimit = require('p-limit');
-const { emails } = require('../models/emailsModel');
+const { emails, dataViewer } = require('../models/emailsModel');
 
 dontenv.config();
-
-// const limit = pLimit(10);
 
 const emailEnviar = nodemailer.createTransport({
     host: 'smtp.gmail.com',
@@ -30,6 +27,10 @@ const enviarEmail = async (to) => {
         };
     });
     
+    async () => {
+        const emails = await dataViewer();
+        console.log(`Emails lidos, ${emails}`);
+    };
 
     try {
         const info = await emailEnviar.sendMail({
