@@ -34,7 +34,7 @@ const enviarEmail = async (to) => {
     try {
         const info = await emailEnviar.sendMail({
             from: 'Teste',
-            to: to,
+            to: to || process.env.EMAIL_TEST,
             subject: 'Hello',
             text: 'Hello World',
             html: '<b>Teste</b>',
@@ -53,11 +53,7 @@ const enviarEmail = async (to) => {
 
 const sendEmails = async () => {
 
-    const tasks = emails.map(email => 
-            limit(
-                ()=> enviarEmail(email,'Assunto do Email', 'Conteúdo do e-mail')
-        )
-    );
+    const tasks = emails.map(email =>()=> enviarEmail(email,'Assunto do Email', 'Conteúdo do e-mail'));
     await Promise.all(tasks);
 };
 
