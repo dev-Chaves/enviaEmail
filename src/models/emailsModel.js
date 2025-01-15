@@ -21,7 +21,7 @@ async function dataViewer() {
                 return;
             }
             
-            const data = xlsx.utils.sheet_to_json(ws); // Converte os dados para JSON
+            const data = xlsx.utils.sheet_to_json(ws);
 
             emails = data.map(item => item.Email);
 
