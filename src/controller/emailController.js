@@ -1,12 +1,13 @@
 const nodemailer = require('nodemailer');
 const dontenv = require('dotenv');
 const { emails, dataViewer } = require('../models/emailsModel');
+const e = require('express');
 
 dontenv.config();
 
 const emailEnviar = nodemailer.createTransport({
     host: 'smtp.gmail.com',
-    port: '587',
+    port: 587,
     secure: false, 
 
     auth: {
@@ -16,8 +17,7 @@ const emailEnviar = nodemailer.createTransport({
 
 });
 
-
-const enviarEmail = async (to) => {
+const enviarEmail = async (email) => {
 
     emailEnviar.verify((error, success) => {
         if (error) {
@@ -26,16 +26,15 @@ const enviarEmail = async (to) => {
             console.log('Conexão ao servidor SMTP bem-sucedida!');
         };
     });
+
+    const emails = await dataViewer();
     
-    async () => {
-        const emails = await dataViewer();
-        console.log(`Emails lidos, ${emails}`);
-    };
+    email = emails[0];
 
     try {
         const info = await emailEnviar.sendMail({
             from: 'Teste',
-            to: to || process.env.EMAIL_TEST,
+            to: email || process.env.EMAIL_TEST,
             subject: 'Hello',
             text: 'Hello World',
             html: '<b>Teste</b>',
@@ -52,10 +51,45 @@ const enviarEmail = async (to) => {
     };
 };
 
-const sendEmails = async () => {
+const sendEmails = async (req, res) => {
 
-    const tasks = emails.map(email =>()=> enviarEmail(email,'Assunto do Email', 'Conteúdo do e-mail'));
-    await Promise.all(tasks);
+    try {
+        const emails = await dataViewer();
+        // console.log(emails[0]);
+        for(const email of emails) {
+            try {
+
+                let sucessCount = 0;
+                let failedCount = 0;
+
+                const info = await emailEnviar.sendMail({
+                    from: 'Teste',
+                    to: email,
+                    subject: 'Hello',
+                    text: 'Hello World',
+                    html: '<b>Teste</b>',
+                });
+        
+                console.log({ message: `E-mail enviado com sucesso! || Mensagem enviada para ${info.messageId}` });
+                sucessCount++;
+        
+            } catch (error) {
+                console.error('Erro ao enviar e-mail:', error);
+                failedCount++;
+        
+                return({ message: 'Erro ao enviar o e-mail', error: error.message });
+            };
+        };
+
+        res.status(200).json({
+            message: 'Processamento concluído',
+            successCount,
+            failedCount
+        });
+
+    } catch (error) {
+        console.error("Erro ao enviar múltiplos emais", error);
+    };
 };
 
 module.exports = {
